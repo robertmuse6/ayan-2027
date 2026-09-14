@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ayan · 2027 — Begin with the end in mind</title>
+<meta name="description" content="A personal mission dashboard: three questions, one radar, a weekly log.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF6EE; --card:#FFFFFF; --ink:#2C2721; --ink-soft:#6E6559; --ink-faint:#9A9082;
+  --line:#ECE2D0; --terra:#C96F4A; --terra-soft:#F6E3D8; --sage:#7A9178; --sage-soft:#E7EDE2;
+  --amber:#D9A441; --amber-soft:#F8EED6; --rose:#B76E79; --rose-soft:#F4E3E5; --slate:#5B7B8C; --slate-soft:#E2EBEF;
+  --radius:20px; --shadow:0 2px 6px rgba(44,39,33,.05),0 12px 32px rgba(44,39,33,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.6;padding-bottom:96px}
+.serif{font-family:'Fraunces',Georgia,serif}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{padding:44px 0 8px}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:700}
+h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,7.5vw,42px);font-weight:600;line-height:1.12;letter-spacing:-.01em;margin:10px 0 12px}
+.lede{color:var(--ink-soft);font-size:16.5px;max-width:34em}
+.principles{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.principle{font-size:12.5px;font-weight:600;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(250,246,238,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.tabbar-in{max-width:680px;margin:0 auto;display:flex;gap:8px}
+.tab{flex:1;text-align:center;padding:11px 6px;border-radius:14px;font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;border:1px solid transparent;transition:all .18s;user-select:none;background:transparent;font-family:inherit}
+.tab.active{background:var(--ink);color:var(--paper)}
+.tab:not(.active):active{background:var(--terra-soft)}
+
+/* sections */
+section.tabpane{display:none;padding-top:26px}
+section.tabpane.active{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* question cards */
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 22px;margin-bottom:22px;overflow:hidden}
+.qnum{font-family:'Fraunces',serif;font-size:15px;color:var(--terra);font-weight:600}
+.qtext{font-family:'Fraunces',serif;font-size:clamp(22px,5.6vw,28px);font-weight:600;line-height:1.22;margin:8px 0 10px;letter-spacing:-.01em}
+.qwhy{color:var(--ink-soft);font-size:14.5px}
+.qtag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:14px}
+.tag-person{background:var(--terra-soft);color:var(--terra)}
+.tag-point{background:var(--sage-soft);color:var(--sage)}
+.tag-loss{background:var(--rose-soft);color:var(--rose)}
+
+/* inspiration library */
+.lib{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px}
+.lib-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:4px 0}
+.lib-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.chev{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-faint);font-size:12px;transition:transform .2s}
+.lib.open .chev{transform:rotate(180deg)}
+.lib-body{display:none;padding-top:12px}
+.lib.open .lib-body{display:block}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.chip{font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--ink)}
+
+.group{border:1px solid var(--line);border-radius:16px;margin-top:10px;overflow:hidden;background:var(--paper)}
+.group-head{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer;user-select:none}
+.group-dot{width:9px;height:9px;border-radius:50%;flex:none}
+.group-name{font-weight:700;font-size:15px}
+.group-sub{font-size:12.5px;color:var(--ink-faint);margin-left:auto;text-align:right;font-style:italic}
+.group-body{display:none;padding:2px 12px 14px}
+.group.open .group-body{display:block}
+.group.open{background:var(--card)}
+
+.track{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-top:8px}
+.group.open .track{background:var(--paper)}
+.track-name{font-weight:700;font-size:14.5px;display:flex;align-items:baseline;gap:8px}
+.track-gloss{font-size:13px;color:var(--terra);font-weight:600;font-style:italic;font-family:'Fraunces',serif}
+.track-examples{font-size:13.5px;color:var(--ink-soft);margin-top:5px;line-height:1.55}
+.track-examples b{color:var(--ink);font-weight:600}
+
+/* tab 2 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px;margin-bottom:22px}
+.card h2{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:6px;letter-spacing:-.01em}
+.card .hint{color:var(--ink-soft);font-size:14px;margin-bottom:14px}
+.answer-q{font-family:'Fraunces',serif;font-size:16.5px;font-weight:600;margin:18px 0 8px;line-height:1.35}
+.answer-q span{color:var(--ink-faint);font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.12em;display:block;margin-bottom:3px}
+textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:var(--paper);padding:13px 14px;font-family:'Inter',sans-serif;font-size:15px;line-height:1.55;color:var(--ink);resize:vertical;min-height:86px;outline:none;transition:border .15s}
+textarea:focus{border-color:var(--terra)}
+
+/* radar */
+.radar-wrap{display:flex;flex-direction:column;align-items:center;padding:6px 0 2px}
+#radar{width:min(100%,340px);height:auto}
+.axis-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.axis-row:last-of-type{border-bottom:none}
+.axis-dot{width:11px;height:11px;border-radius:50%;flex:none}
+.axis-name{border:none;background:transparent;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;color:var(--ink);width:128px;outline:none;border-bottom:1px solid transparent;padding:2px 0}
+.axis-name:focus{border-bottom-color:var(--terra)}
+.axis-slider{flex:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:var(--line);outline:none}
+.axis-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--card);border:3px solid var(--terra);box-shadow:0 2px 6px rgba(0,0,0,.15);cursor:pointer}
+.axis-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--card);border:3px solid var(--terra);cursor:pointer}
+.axis-val{font-family:'Fraunces',serif;font-weight:600;font-size:17px;width:26px;text-align:right}
+
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);border:none;border-radius:13px;padding:13px 20px;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* kaizen */
+.log-entry{border:1px solid var(--line);border-radius:15px;padding:14px 15px;margin-top:10px;background:var(--paper)}
+.log-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.log-date{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--terra)}
+.log-del{border:none;background:none;color:var(--ink-faint);font-size:17px;cursor:pointer;padding:2px 6px;line-height:1}
+.log-note{font-size:15px;font-weight:500;margin-top:3px}
+.log-ratings{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.log-pill{font-size:11.5px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:var(--ink-soft)}
+.empty{color:var(--ink-faint);font-size:14px;font-style:italic;padding:16px 4px;text-align:center}
+
+.mini-ratings{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin:12px 0}
+.mini-rate{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 10px;text-align:center}
+.mini-rate label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-step{display:flex;align-items:center;justify-content:center;gap:9px}
+.mini-step button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;line-height:1}
+.mini-step b{font-family:'Fraunces',serif;font-size:16px;min-width:16px}
+
+.kaikaku{background:linear-gradient(135deg,#2C2721,#4A3B2E);color:#F6EFE4;border-radius:var(--radius);padding:26px 22px;margin-bottom:22px;box-shadow:var(--shadow)}
+.kaikaku .eyebrow{color:var(--amber)}
+.kaikaku h2{font-family:'Fraunces',serif;font-size:23px;font-weight:600;margin:8px 0 6px;letter-spacing:-.01em}
+.kaikaku p{font-size:14.5px;color:#D9CDBB}
+.kaikaku textarea{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#F6EFE4;margin-top:14px}
+.kaikaku textarea::placeholder{color:#A89883}
+.kaikaku .btn{background:var(--amber);color:#2C2721;margin-top:12px}
+.leap{border-left:3px solid var(--amber);padding:8px 14px;margin-top:12px}
+.leap .log-date{color:var(--amber)}
+.leap div{font-size:14.5px}
+
+#trend{width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.legend span{font-size:11.5px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+.foot{text-align:center;color:var(--ink-faint);font-size:12.5px;padding:26px 0 8px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--paper);padding:11px 20px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .25s;z-index:99;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.saved-dot{font-size:11.5px;color:var(--sage);font-weight:600;opacity:0;transition:opacity .3s}
+.saved-dot.show{opacity:1}
+@media (min-width:640px){ body{padding-bottom:0} .tabbar{position:sticky;top:0;bottom:auto;border-top:none;border-bottom:1px solid var(--line);margin-bottom:6px} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Ayan &middot; 2026 &rarr; 2027</div>
+  <h1>Begin with the end in mind.</h1>
+  <p class="lede">Three questions, one radar, one small log. This isn't a review — it's a compass. We start from who you already are, and amplify the best parts.</p>
+  <div class="principles">
+    <span class="principle">Vision first</span>
+    <span class="principle">Kaizen — small steps, weekly</span>
+    <span class="principle">Kaikaku — occasional leaps</span>
+    <span class="principle">Strengths, amplified</span>
+  </div>
+</header>
+
+<!-- ============ TAB 1 : QUESTIONS ============ -->
+<section class="tabpane active" id="pane-questions">
+
+  <div class="qcard">
+    <div class="qtag tag-person">A person</div>
+    <div class="qtext">Who is doing work you'd want to be doing in three years?</div>
+    <p class="qwhy">Find a person, not a job title. A real someone makes the future concrete enough to chase.</p>
+    <div class="lib" data-lib>
+      <div class="lib-head"><span class="lib-title">Inspiration · five lenses</span><span class="chev">&#9662;</span></div>
+      <div class="lib-body">
+        <p style="font-size:14px;color:var(--ink-soft);margin-bottom:10px">What is it about what they do? Look through each lens:</p>
+        <div class="chips">
+          <span class="chip">Depth — mastery of one thing</span>
+          <span class="chip">Reach — how far their work travels</span>
+          <span class="chip">Ownership — it's theirs</span>
+          <span class="chip">Craft — the quality bar</span>
+          <span class="chip">Proximity — close to what matters</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qtag tag-point">A thing you can point at</div>
+    <div class="qtext">In December 2027, what are three things you'd point at?</div>
+    <p class="qwhy">Not feelings — artifacts. Things with names, numbers, and witnesses. Browse the library below; steal shamelessly.</p>
+
+    <div class="lib" data-lib>
+      <div class="lib-head"><span class="lib-title">Inspiration · tracks to consider</span><span class="chev">&#9662;</span></div>
+      <div class="lib-body">
+        <p style="font-size:14px;color:var(--ink-soft);margin-bottom:10px">Six crafts a year of work can live in:</p>
+        <div class="chips">
+          <span class="chip">Point of view</span><span class="chip">Research</span><span class="chip">Design</span>
+          <span class="chip">Building</span><span class="chip">Selling</span><span class="chip">Leadership &amp; management</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lib open" data-lib style="border-top:none;padding-top:6px">
+      <div class="lib-head"><span class="lib-title">Inspiration · sixteen ways to point</span><span class="chev">&#9662;</span></div>
+      <div class="lib-body" style="display:block">
+
+        <div class="group" data-group>
+          <div class="group-head"><span class="group-dot" style="background:var(--terra)"></span><span class="group-name">Scale</span><span class="group-sub">"I operated at a size"</span></div>
+          <div class="group-body">
+            <div class="track"><div class="track-name">Volume <span class="track-gloss">a big countable number</span></div><div class="track-examples"><b>60 interviews. 300 interviews. 50 published articles. 850 scholars.</b></div></div>
+            <div class="track"><div class="track-name">Spread <span class="track-gloss">across places</span></div><div class="track-examples"><b>Across 7 cities. Across 5 continents. Across 200 companies.</b></div></div>
+            <div class="track"><div class="track-name">Access <span class="track-gloss">rooms you weren't supposed to be in</span></div><div class="track-examples"><b>Pitched the R&amp;D head of a $2.5B multinational within two months of joining. Pitched 300 investors. 500+ CXOs.</b></div></div>
+            <div class="track"><div class="track-name">Platform <span class="track-gloss">a stage with your name on it</span></div><div class="track-examples"><b>TEDx. Published. A masterclass to 60 people.</b></div></div>
+          </div>
+        </div>
+
+        <div class="group" data-group>
+          <div class="group-head"><span class="group-dot" style="background:var(--sage)"></span><span class="group-name">Change</span><span class="group-sub">"Something is different because of me"</span></div>
+          <div class="group-body">
+            <div class="track"><div class="track-name">Delta <span class="track-gloss">a before-and-after number</span></div><div class="track-examples"><b>66% less form-filling time. 300% more leads. 2.5x faster acquisition.</b></div></div>
+            <div class="track"><div class="track-name">Money moved <span class="track-gloss">rupees with a story</span></div><div class="track-examples"><b>&#8377;100 Cr recovered. &#8377;22,000 raised in two days. $1,880 baked.</b></div></div>
+            <div class="track"><div class="track-name">Adoption <span class="track-gloss">someone else picked it up</span></div><div class="track-examples"><b>IIM-Ahmedabad adopted the insights. 545 rural families. 100K downloads. All 120 copies sold.</b></div></div>
+            <div class="track"><div class="track-name">First <span class="track-gloss">first of its kind</span></div><div class="track-examples"><b>First AAS-in-Asia in South Asia. First auction-based cricket league at Ashoka.</b></div></div>
+          </div>
+        </div>
+
+        <div class="group" data-group>
+          <div class="group-head"><span class="group-dot" style="background:var(--amber)"></span><span class="group-name">Recognition</span><span class="group-sub">"Someone else vouched"</span></div>
+          <div class="group-body">
+            <div class="track"><div class="track-name">Selection <span class="track-gloss">a ratio that says it</span></div><div class="track-examples"><b>1 in 15,000 at 6% acceptance. Top 5 of 92. 2 of 150.</b></div></div>
+            <div class="track"><div class="track-name">Vouching <span class="track-gloss">a named senior, on record</span></div><div class="track-examples"><b>The Chief Design Officer quoted by name.</b></div></div>
+            <div class="track"><div class="track-name">Chosen by peers <span class="track-gloss">elected, not appointed</span></div><div class="track-examples"><b>School President. Leader of Opposition.</b></div></div>
+            <div class="track"><div class="track-name">Named artifact <span class="track-gloss">a thing with a name that isn't your job title</span></div><div class="track-examples"><b>Swasth Seva. GrowBoxx. Pehchaan. Project 315.</b></div></div>
+          </div>
+        </div>
+
+        <div class="group" data-group>
+          <div class="group-head"><span class="group-dot" style="background:var(--rose)"></span><span class="group-name">Endurance</span><span class="group-sub">"I stayed"</span></div>
+          <div class="group-body">
+            <div class="track"><div class="track-name">Sustained <span class="track-gloss">kept showing up</span></div><div class="track-examples"><b>Three years of weekly pottery teaching. A nine-year Bharatnatyam course to Arangetram. Six semesters of Dean's List.</b></div></div>
+            <div class="track"><div class="track-name">Outlived me <span class="track-gloss">it runs without you</span></div><div class="track-examples"><b>"Setting a tradition for years to come." The thing still runs without you.</b></div></div>
+            <div class="track"><div class="track-name">Taught <span class="track-gloss">passed it on</span></div><div class="track-examples"><b>TA. Workshop. Trained the next person.</b></div></div>
+            <div class="track"><div class="track-name">Led people <span class="track-gloss">humans, not tasks</span></div><div class="track-examples"><b>Managed 40. Recruited 50. Directed 60 volunteers.</b></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qtag tag-loss">A loss</div>
+    <div class="qtext">What would make 2027 feel wasted?</div>
+    <p class="qwhy">Naming the loss protects the win. Say it once, clearly — then build the year so it can't happen.</p>
+    <div class="lib" data-lib>
+      <div class="lib-head"><span class="lib-title">Inspiration · four fears worth naming</span><span class="chev">&#9662;</span></div>
+      <div class="lib-body">
+        <div class="chips">
+          <span class="chip">Money — earned less than I should have</span>
+          <span class="chip">Visibility — did the work, nobody saw it</span>
+          <span class="chip">A skill I'm scared is decaying</span>
+          <span class="chip">A version of myself I don't want to become</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:8px 0 4px">
+    <button class="btn" data-goto="my2027">Answer them &rarr;</button>
+  </div>
+</section>
+
+<!-- ============ TAB 2 : MY 2027 ============ -->
+<section class="tabpane" id="pane-my2027">
+
+  <div class="card">
+    <h2>My answers</h2>
+    <p class="hint">Write like nobody's grading. You can edit these any time — everything saves automatically on this device.</p>
+    <div class="answer-q"><span>Q1 &middot; A person</span>Who is doing work you'd want to be doing in three years — and what is it about what they do?</div>
+    <textarea id="ans1" placeholder="Name them. Then say which lens pulls you: depth, reach, ownership, craft, proximity&hellip;"></textarea>
+    <div class="answer-q"><span>Q2 &middot; A thing you can point at</span>In December 2027, what are three things you'd point at?</div>
+    <textarea id="ans2" placeholder="1.&hellip;&#10;2.&hellip;&#10;3.&hellip;"></textarea>
+    <div class="answer-q"><span>Q3 &middot; A loss</span>What would make 2027 feel wasted?</div>
+    <textarea id="ans3" placeholder="The money, the visibility, the skill, the version of you&hellip;"></textarea>
+    <div class="saved-dot" id="saved1">Saved &#10003;</div>
+  </div>
+
+  <div class="card">
+    <h2>My radar</h2>
+    <p class="hint">Pick the five axes that define a kickass year for you. Then rate where you stand today, 0&ndash;10. This is a snapshot, not a verdict.</p>
+    <div class="radar-wrap"><svg id="radar" viewBox="0 0 340 340" role="img" aria-label="Radar chart of your five axes"></svg></div>
+    <div id="axisList" style="margin-top:14px"></div>
+    <div class="saved-dot" id="saved2">Saved &#10003;</div>
+  </div>
+
+  <div class="card">
+    <h2>Take it with you</h2>
+    <p class="hint">Your answers, axes and log as a clean document — bring it to your next 1:1.</p>
+    <div class="btn-row">
+      <button class="btn" id="btnCopy">Copy summary</button>
+      <button class="btn ghost" id="btnDownload">Download .md</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB 3 : KAIZEN ============ -->
+<section class="tabpane" id="pane-kaizen">
+
+  <div class="card">
+    <h2>Kaizen — the weekly log</h2>
+    <p class="hint">Once a week, one line: what got better. Small counts. 1% a week is 67% a year.</p>
+    <div class="answer-q" style="margin-top:6px"><span id="weekLabel">This week</span>This week I got better at&hellip;</div>
+    <textarea id="logNote" placeholder="One honest line. e.g. Finally asked for feedback instead of waiting for it." style="min-height:64px"></textarea>
+    <div class="mini-ratings" id="miniRatings"></div>
+    <button class="btn" id="btnLog">Log this week</button>
+  </div>
+
+  <div class="card" id="trendCard" style="display:none">
+    <h2>The trend</h2>
+    <p class="hint">Each line is one axis of your radar, week over week.</p>
+    <svg id="trend" viewBox="0 0 640 240"></svg>
+    <div class="legend" id="trendLegend"></div>
+  </div>
+
+  <div class="card">
+    <h2>Past weeks</h2>
+    <div id="logList"></div>
+  </div>
+
+  <div class="kaikaku">
+    <div class="eyebrow">Kaikaku</div>
+    <h2>Sometimes, don't inch. Leap.</h2>
+    <p>Kaizen compounds quietly; kaikaku is the step-change. Ask yourself periodically:</p>
+    <p style="font-family:'Fraunces',serif;font-size:19px;color:#F6EFE4;margin-top:10px">"What would make this quarter a leap, not an inch?"</p>
+    <textarea id="leapText" placeholder="The bold version: the project you'd pitch, the room you'd ask to be in, the thing you'd ship&hellip;"></textarea>
+    <button class="btn" id="btnLeap">Save this leap</button>
+    <div id="leapList"></div>
+  </div>
+
+  <div class="foot">Made for Ayan &middot; everything stays on your device</div>
+</section>
+
+</div>
+
+<nav class="tabbar"><div class="tabbar-in">
+  <button class="tab active" data-tab="questions">The Questions</button>
+  <button class="tab" data-tab="my2027">My 2027</button>
+  <button class="tab" data-tab="kaizen">Kaizen</button>
+</div></nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var AXCOLORS=["#C96F4A","#7A9178","#D9A441","#B76E79","#5B7B8C"];
+var DEFAXES=["Craft","Ownership","Reach","Visibility","Leadership"];
+
+var state=load();
+function load(){
+  try{var s=JSON.parse(localStorage.getItem("ayan2027"));if(s&&s.axes)return s;}catch(e){}
+  return {answers:{q1:"",q2:"",q3:""},axes:DEFAXES.map(function(n){return{name:n,value:5};}),logs:[],leaps:[]};
+}
+var saveT;
+function save(which){
+  try{localStorage.setItem("ayan2027",JSON.stringify(state));}catch(e){}
+  if(which){var d=document.getElementById(which);if(d){d.classList.add("show");clearTimeout(saveT);saveT=setTimeout(function(){d.classList.remove("show");},1200);}}
+}
+
+/* ---------- tabs ---------- */
+var tabs=document.querySelectorAll(".tab"),panes={questions:document.getElementById("pane-questions"),my2027:document.getElementById("pane-my2027"),kaizen:document.getElementById("pane-kaizen")};
+function go(name){
+  tabs.forEach(function(t){t.classList.toggle("active",t.dataset.tab===name);});
+  Object.keys(panes).forEach(function(k){panes[k].classList.toggle("active",k===name);});
+  if(location.hash!=="#"+name)history.replaceState(null,"","#"+name);
+  window.scrollTo(0,0);
+}
+tabs.forEach(function(t){t.addEventListener("click",function(){go(t.dataset.tab);});});
+document.querySelectorAll("[data-goto]").forEach(function(b){b.addEventListener("click",function(){go(b.dataset.goto);});});
+if(location.hash==="#my2027"||location.hash==="#kaizen")go(location.hash.slice(1));
+
+/* ---------- collapsibles ---------- */
+document.querySelectorAll("[data-lib] > .lib-head").forEach(function(h){
+  h.addEventListener("click",function(){h.parentElement.classList.toggle("open");});
+});
+document.querySelectorAll("[data-group] > .group-head").forEach(function(h){
+  h.addEventListener("click",function(){h.parentElement.classList.toggle("open");});
+});
+
+/* ---------- toast ---------- */
+var toastT;
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove("show");},1800);}
+
+/* ---------- answers ---------- */
+["1","2","3"].forEach(function(i){
+  var el=document.getElementById("ans"+i);
+  el.value=state.answers["q"+i]||"";
+  el.addEventListener("input",function(){state.answers["q"+i]=el.value;save("saved1");});
+});
+
+/* ---------- radar ---------- */
+var svg=document.getElementById("radar"),CX=170,CY=170,R=118,NS="http://www.w3.org/2000/svg";
+function pt(i,v){var a=(-90+i*72)*Math.PI/180,r=R*v/10;return[CX+r*Math.cos(a),CY+r*Math.sin(a)];}
+function el(name,attrs){var e=document.createElementNS(NS,name);for(var k in attrs)e.setAttribute(k,attrs[k]);return e;}
+function drawRadar(){
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  [2,4,6,8,10].forEach(function(v){
+    var pts=state.axes.map(function(_,i){return pt(i,v).join(",");}).join(" ");
+    svg.appendChild(el("polygon",{points:pts,fill:"none",stroke:"#ECE2D0","stroke-width":v===10?1.6:1}));
+  });
+  state.axes.forEach(function(ax,i){
+    var p=pt(i,10);
+    svg.appendChild(el("line",{x1:CX,y1:CY,x2:p[0],y2:p[1],stroke:"#ECE2D0","stroke-width":1}));
+    var lp=pt(i,12.6);
+    var t=el("text",{x:lp[0],y:lp[1],"text-anchor":"middle","dominant-baseline":"middle","font-size":12.5,"font-weight":700,fill:AXCOLORS[i],"font-family":"Inter,sans-serif"});
+    var name=ax.name||("Axis "+(i+1));
+    t.textContent=name.length>12?name.slice(0,11)+"…":name;
+    svg.appendChild(t);
+  });
+  var pts=state.axes.map(function(ax,i){return pt(i,Math.max(ax.value,0.4)).join(",");}).join(" ");
+  svg.appendChild(el("polygon",{points:pts,fill:"rgba(201,111,74,.16)",stroke:"#C96F4A","stroke-width":2.5,"stroke-linejoin":"round"}));
+  state.axes.forEach(function(ax,i){
+    var p=pt(i,Math.max(ax.value,0.4));
+    svg.appendChild(el("circle",{cx:p[0],cy:p[1],r:5.5,fill:AXCOLORS[i],stroke:"#fff","stroke-width":2}));
+    var vp=pt(i,Math.max(ax.value,0.4)+1.9);
+    var vt=el("text",{x:vp[0],y:vp[1],"text-anchor":"middle","dominant-baseline":"middle","font-size":12,"font-weight":700,fill:"#2C2721","font-family":"Fraunces,serif"});
+    vt.textContent=ax.value;svg.appendChild(vt);
+  });
+}
+var axisList=document.getElementById("axisList");
+function drawAxisList(){
+  axisList.innerHTML="";
+  state.axes.forEach(function(ax,i){
+    var row=document.createElement("div");row.className="axis-row";
+    var dot=document.createElement("span");dot.className="axis-dot";dot.style.background=AXCOLORS[i];
+    var nm=document.createElement("input");nm.className="axis-name";nm.value=ax.name;nm.maxLength=20;nm.setAttribute("aria-label","Axis name");
+    nm.addEventListener("input",function(){state.axes[i].name=nm.value;save("saved2");drawRadar();drawLegend();buildMiniRatings();});
+    var sl=document.createElement("input");sl.type="range";sl.min=0;sl.max=10;sl.step=1;sl.value=ax.value;sl.className="axis-slider";sl.setAttribute("aria-label","Rating for "+ax.name);
+    sl.addEventListener("input",function(){state.axes[i].value=+sl.value;val.textContent=sl.value;save("saved2");drawRadar();});
+    var val=document.createElement("span");val.className="axis-val";val.textContent=ax.value;
+    row.appendChild(dot);row.appendChild(nm);row.appendChild(sl);row.appendChild(val);
+    axisList.appendChild(row);
+  });
+}
+
+/* ---------- export ---------- */
+function md(){
+  var L=[];
+  L.push("# Ayan · 2027 — Begin with the end in mind");
+  L.push("_Exported "+new Date().toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})+"_");
+  L.push("");L.push("## Q1 · A person — Who is doing work I'd want to be doing in three years?");L.push(state.answers.q1||"_(not answered yet)_");
+  L.push("");L.push("## Q2 · A thing you can point at — In December 2027, what are three things I'd point at?");L.push(state.answers.q2||"_(not answered yet)_");
+  L.push("");L.push("## Q3 · A loss — What would make 2027 feel wasted?");L.push(state.answers.q3||"_(not answered yet)_");
+  L.push("");L.push("## My radar (today)");state.axes.forEach(function(a){L.push("- **"+a.name+"**: "+a.value+"/10");});
+  if(state.logs.length){L.push("");L.push("## Kaizen log");state.logs.slice().reverse().forEach(function(l){L.push("- **"+l.date+"** — "+l.note+" ("+l.ratings.map(function(r,i){return (state.axes[i]?state.axes[i].name:"A"+(i+1))+" "+r;}).join(", ")+")");});}
+  if(state.leaps.length){L.push("");L.push("## Kaikaku leaps");state.leaps.slice().reverse().forEach(function(l){L.push("- **"+l.date+"** — "+l.text);});}
+  return L.join("\n");
+}
+document.getElementById("btnCopy").addEventListener("click",function(){
+  var text=md();
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast("Copied — paste it anywhere");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+});
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied — paste it anywhere");}catch(e){toast("Copy didn't work — try Download");}document.body.removeChild(ta);}
+document.getElementById("btnDownload").addEventListener("click",function(){
+  var blob=new Blob([md()],{type:"text/markdown"}),a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="ayan-2027.md";document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast("Downloaded ayan-2027.md");
+});
+
+/* ---------- kaizen log ---------- */
+var miniWrap=document.getElementById("miniRatings"),miniVals=[];
+function buildMiniRatings(){
+  miniWrap.innerHTML="";miniVals=state.axes.map(function(a){return a.value;});
+  state.axes.forEach(function(ax,i){
+    var box=document.createElement("div");box.className="mini-rate";
+    var lab=document.createElement("label");lab.textContent=ax.name||("Axis "+(i+1));
+    var st=document.createElement("div");st.className="mini-step";
+    var minus=document.createElement("button");minus.textContent="−";minus.type="button";
+    var b=document.createElement("b");b.textContent=miniVals[i];
+    var plus=document.createElement("button");plus.textContent="+";plus.type="button";
+    minus.addEventListener("click",function(){miniVals[i]=Math.max(0,miniVals[i]-1);b.textContent=miniVals[i];});
+    plus.addEventListener("click",function(){miniVals[i]=Math.min(10,miniVals[i]+1);b.textContent=miniVals[i];});
+    st.appendChild(minus);st.appendChild(b);st.appendChild(plus);
+    box.appendChild(lab);box.appendChild(st);miniWrap.appendChild(box);
+  });
+}
+document.getElementById("btnLog").addEventListener("click",function(){
+  var note=document.getElementById("logNote").value.trim();
+  if(!note){toast("Write one line first");return;}
+  var today=new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+  state.logs.push({date:today,note:note,ratings:miniVals.slice()});
+  state.axes.forEach(function(ax,i){ax.value=miniVals[i];});
+  document.getElementById("logNote").value="";
+  save();drawRadar();drawAxisList();renderLogs();renderTrend();
+  toast("Logged. Small counts.");
+});
+function renderLogs(){
+  var list=document.getElementById("logList");list.innerHTML="";
+  if(!state.logs.length){list.innerHTML='<div class="empty">No weeks logged yet — the first line is the hardest.</div>';return;}
+  state.logs.map(function(l,idx){return{l:l,idx:idx};}).reverse().forEach(function(w){
+    var e=document.createElement("div");e.className="log-entry";
+    var top=document.createElement("div");top.className="log-top";
+    var d=document.createElement("span");d.className="log-date";d.textContent=w.l.date;
+    var del=document.createElement("button");del.className="log-del";del.textContent="×";del.title="Delete this entry";
+    del.addEventListener("click",function(){state.logs.splice(w.idx,1);save();renderLogs();renderTrend();});
+    top.appendChild(d);top.appendChild(del);
+    var n=document.createElement("div");n.className="log-note";n.textContent=w.l.note;
+    var pills=document.createElement("div");pills.className="log-ratings";
+    w.l.ratings.forEach(function(r,i){var p=document.createElement("span");p.className="log-pill";p.textContent=(state.axes[i]?state.axes[i].name:"A"+(i+1))+" "+r;pills.appendChild(p);});
+    e.appendChild(top);e.appendChild(n);e.appendChild(pills);list.appendChild(e);
+  });
+}
+
+/* ---------- trend ---------- */
+var trend=document.getElementById("trend");
+function renderTrend(){
+  var card=document.getElementById("trendCard");
+  if(state.logs.length<2){card.style.display="none";return;}
+  card.style.display="block";
+  while(trend.firstChild)trend.removeChild(trend.firstChild);
+  var W=640,H=240,PL=36,PR=14,PT=16,PB=30,n=state.logs.length;
+  [0,5,10].forEach(function(v){
+    var y=PT+(H-PT-PB)*(1-v/10);
+    trend.appendChild(el("line",{x1:PL,y1:y,x2:W-PR,y2:y,stroke:"#ECE2D0","stroke-width":1}));
+    var t=el("text",{x:PL-8,y:y+4,"text-anchor":"end","font-size":11,fill:"#9A9082","font-family":"Inter,sans-serif"});t.textContent=v;trend.appendChild(t);
+  });
+  function X(i){return PL+(W-PL-PR)*(n===1?0.5:i/(n-1));}
+  function Y(v){return PT+(H-PT-PB)*(1-v/10);}
+  state.axes.forEach(function(ax,ai){
+    var pts=state.logs.map(function(l,i){return X(i)+","+Y(l.ratings[ai]!=null?l.ratings[ai]:0);}).join(" ");
+    trend.appendChild(el("polyline",{points:pts,fill:"none",stroke:AXCOLORS[ai],"stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
+    state.logs.forEach(function(l,i){trend.appendChild(el("circle",{cx:X(i),cy:Y(l.ratings[ai]!=null?l.ratings[ai]:0),r:3.6,fill:AXCOLORS[ai]}));});
+  });
+  state.logs.forEach(function(l,i){
+    var t=el("text",{x:X(i),y:H-8,"text-anchor":"middle","font-size":10.5,fill:"#9A9082","font-family":"Inter,sans-serif"});
+    t.textContent=l.date;trend.appendChild(t);
+  });
+  drawLegend();
+}
+function drawLegend(){
+  var leg=document.getElementById("trendLegend");leg.innerHTML="";
+  state.axes.forEach(function(ax,i){var s=document.createElement("span");s.innerHTML="<i style='background:"+AXCOLORS[i]+"'></i>"+(ax.name||("Axis "+(i+1)));leg.appendChild(s);});
+}
+
+/* ---------- kaikaku ---------- */
+document.getElementById("btnLeap").addEventListener("click",function(){
+  var t=document.getElementById("leapText").value.trim();
+  if(!t){toast("Write the leap first");return;}
+  var today=new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+  state.leaps.push({date:today,text:t});
+  document.getElementById("leapText").value="";
+  save();renderLeaps();toast("Leap saved. Now schedule it.");
+});
+function renderLeaps(){
+  var list=document.getElementById("leapList");list.innerHTML="";
+  state.leaps.slice().reverse().forEach(function(l){
+    var d=document.createElement("div");d.className="leap";
+    var dt=document.createElement("span");dt.className="log-date";dt.textContent=l.date;
+    var tx=document.createElement("div");tx.textContent=l.text;
+    d.appendChild(dt);d.appendChild(tx);list.appendChild(d);
+  });
+}
+
+/* ---------- init ---------- */
+drawRadar();drawAxisList();buildMiniRatings();renderLogs();renderTrend();renderLeaps();
+})();
+</script>
+</body>
+</html>
