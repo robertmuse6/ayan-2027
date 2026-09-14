@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Ayan · 2027 · Begin with the end in mind</title>
-<meta name="description" content="A personal mission dashboard: three questions, one radar, a weekly log.">
+<title>Ayaan · How do we craft a kickass 2027?</title>
+<meta name="description" content="A personal mission dashboard: three questions, five axes, a weekly log.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,15 +24,13 @@ body{background:var(--paper);color:var(--ink);font-family:'Inter',system-ui,sans
 /* header */
 header{padding:44px 0 8px}
 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);font-weight:700}
-h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,7.5vw,42px);font-weight:600;line-height:1.12;letter-spacing:-.01em;margin:10px 0 12px}
-.lede{color:var(--ink-soft);font-size:16.5px;max-width:34em}
-.principles{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.principle{font-size:12.5px;font-weight:600;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,7.5vw,42px);font-weight:600;line-height:1.12;letter-spacing:-.01em;margin:10px 0 8px}
+.subtitle{font-size:13px;color:var(--ink-faint);font-style:italic;font-family:'Fraunces',serif}
 
 /* tab bar */
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(250,246,238,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
-.tabbar-in{max-width:680px;margin:0 auto;display:flex;gap:8px}
-.tab{flex:1;text-align:center;padding:11px 6px;border-radius:14px;font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;border:1px solid transparent;transition:all .18s;user-select:none;background:transparent;font-family:inherit}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(250,246,238,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.tabbar-in{max-width:680px;margin:0 auto;display:flex;gap:6px}
+.tab{flex:1;text-align:center;padding:11px 4px;border-radius:14px;font-size:12.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;border:1px solid transparent;transition:all .18s;user-select:none;background:transparent;font-family:inherit}
 .tab.active{background:var(--ink);color:var(--paper)}
 .tab:not(.active):active{background:var(--terra-soft)}
 
@@ -43,13 +41,11 @@ section.tabpane.active{display:block;animation:fade .3s ease}
 
 /* question cards */
 .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 22px;margin-bottom:22px;overflow:hidden}
-.qnum{font-family:'Fraunces',serif;font-size:15px;color:var(--terra);font-weight:600}
-.qtext{font-family:'Fraunces',serif;font-size:clamp(22px,5.6vw,28px);font-weight:600;line-height:1.22;margin:8px 0 10px;letter-spacing:-.01em}
+.qkick{display:flex;align-items:baseline;gap:10px}
+.qn{font-family:'Fraunces',serif;font-size:34px;font-weight:600;color:var(--terra);line-height:1}
+.qimp{font-family:'Fraunces',serif;font-size:17.5px;font-weight:600;color:var(--ink-soft)}
+.qtext{font-family:'Fraunces',serif;font-size:clamp(22px,5.6vw,28px);font-weight:600;line-height:1.22;margin:10px 0 10px;letter-spacing:-.01em}
 .qwhy{color:var(--ink-soft);font-size:14.5px}
-.qtag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:14px}
-.tag-person{background:var(--terra-soft);color:var(--terra)}
-.tag-point{background:var(--sage-soft);color:var(--sage)}
-.tag-loss{background:var(--rose-soft);color:var(--rose)}
 
 /* inspiration library */
 .lib{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px}
@@ -79,7 +75,7 @@ section.tabpane.active{display:block;animation:fade .3s ease}
 .track-examples{font-size:13.5px;color:var(--ink-soft);margin-top:5px;line-height:1.55}
 .track-examples b{color:var(--ink);font-weight:600}
 
-/* tab 2 */
+/* cards */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px;margin-bottom:22px}
 .card h2{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:6px;letter-spacing:-.01em}
 .card .hint{color:var(--ink-soft);font-size:14px;margin-bottom:14px}
@@ -100,6 +96,16 @@ textarea:focus{border-color:var(--terra)}
 .axis-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--card);border:3px solid var(--terra);box-shadow:0 2px 6px rgba(0,0,0,.15);cursor:pointer}
 .axis-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--card);border:3px solid var(--terra);cursor:pointer}
 .axis-val{font-family:'Fraunces',serif;font-weight:600;font-size:17px;width:26px;text-align:right}
+
+/* tentative / choose-five state */
+.tent{border:2px dashed var(--line);border-radius:var(--radius);padding:26px 22px;margin-bottom:22px;background:transparent;text-align:center}
+.tent h2{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin:12px 0 6px;letter-spacing:-.01em}
+.tent p{color:var(--ink-soft);font-size:14.5px;max-width:30em;margin:0 auto}
+.choose-list{margin:18px auto 4px;max-width:340px;text-align:left}
+.choose-row{display:flex;align-items:center;gap:10px;padding:7px 0}
+.choose-row .axis-dot{width:11px;height:11px;border-radius:50%;flex:none}
+.choose-input{flex:1;border:none;border-bottom:1.5px dashed var(--line);background:transparent;font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--ink);padding:4px 2px;outline:none}
+.choose-input:focus{border-bottom-color:var(--terra)}
 
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);border:none;border-radius:13px;padding:13px 20px;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:transform .12s}
 .btn:active{transform:scale(.97)}
@@ -151,22 +157,16 @@ textarea:focus{border-color:var(--terra)}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">Ayan &middot; 2026 &rarr; 2027</div>
-  <h1>Begin with the end in mind.</h1>
-  <p class="lede">Three questions, one radar, one small log. This isn't a review · it's a compass. We start from who you already are, and amplify the best parts.</p>
-  <div class="principles">
-    <span class="principle">Vision first</span>
-    <span class="principle">Kaizen · small steps, weekly</span>
-    <span class="principle">Kaikaku · occasional leaps</span>
-    <span class="principle">Strengths, amplified</span>
-  </div>
+  <div class="eyebrow">Ayaan &middot; 2026 &rarr; 2027</div>
+  <h1>How do we craft a kickass 2027?</h1>
+  <p class="subtitle">Begin with the end in mind.</p>
 </header>
 
 <!-- ============ TAB 1 : QUESTIONS ============ -->
 <section class="tabpane active" id="pane-questions">
 
   <div class="qcard">
-    <div class="qtag tag-person">A person</div>
+    <div class="qkick"><span class="qn">1</span><span class="qimp">Think of a person.</span></div>
     <div class="qtext">Who is doing work you'd want to be doing in three years?</div>
     <p class="qwhy">Find a person, not a job title. A real someone makes the future concrete enough to chase.</p>
     <div class="lib" data-lib>
@@ -185,7 +185,7 @@ textarea:focus{border-color:var(--terra)}
   </div>
 
   <div class="qcard">
-    <div class="qtag tag-point">A thing you can point at</div>
+    <div class="qkick"><span class="qn">2</span><span class="qimp">Think of a thing you can point at.</span></div>
     <div class="qtext">In December 2027, what are three things you'd point at?</div>
     <p class="qwhy">Not feelings · artifacts. Things with names, numbers, and witnesses. Browse the library below; steal shamelessly.</p>
 
@@ -249,7 +249,7 @@ textarea:focus{border-color:var(--terra)}
   </div>
 
   <div class="qcard">
-    <div class="qtag tag-loss">A loss</div>
+    <div class="qkick"><span class="qn">3</span><span class="qimp">Think of the losses.</span></div>
     <div class="qtext">What would make 2027 feel wasted?</div>
     <p class="qwhy">Naming the loss protects the win. Say it once, clearly · then build the year so it can't happen.</p>
     <div class="lib" data-lib>
@@ -266,7 +266,7 @@ textarea:focus{border-color:var(--terra)}
   </div>
 
   <div style="text-align:center;margin:8px 0 4px">
-    <button class="btn" data-goto="my2027">Answer them &rarr;</button>
+    <button class="btn" data-goto="my2027">Write my answers &rarr;</button>
   </div>
 </section>
 
@@ -276,31 +276,20 @@ textarea:focus{border-color:var(--terra)}
   <div class="card">
     <h2>My answers</h2>
     <p class="hint">Write like nobody's grading. You can edit these any time · everything saves automatically on this device.</p>
-    <div class="answer-q"><span>Q1 &middot; A person</span>Who is doing work you'd want to be doing in three years · and what is it about what they do?</div>
+    <div class="answer-q"><span>1 &middot; Think of a person</span>Who is doing work you'd want to be doing in three years · and what is it about what they do?</div>
     <textarea id="ans1" placeholder="Name them. Then say which lens pulls you: depth, reach, ownership, craft, proximity&hellip;"></textarea>
-    <div class="answer-q"><span>Q2 &middot; A thing you can point at</span>In December 2027, what are three things you'd point at?</div>
+    <div class="answer-q"><span>2 &middot; Think of a thing you can point at</span>In December 2027, what are three things you'd point at?</div>
     <textarea id="ans2" placeholder="1.&hellip;&#10;2.&hellip;&#10;3.&hellip;"></textarea>
-    <div class="answer-q"><span>Q3 &middot; A loss</span>What would make 2027 feel wasted?</div>
+    <div class="answer-q"><span>3 &middot; Think of the losses</span>What would make 2027 feel wasted?</div>
     <textarea id="ans3" placeholder="The money, the visibility, the skill, the version of you&hellip;"></textarea>
     <div class="saved-dot" id="saved1">Saved &#10003;</div>
   </div>
 
-  <div class="card">
-    <h2>My radar</h2>
-    <p class="hint">Pick the five axes that define a kickass year for you. Then rate where you stand today, 0&ndash;10. This is a snapshot, not a verdict.</p>
-    <div class="radar-wrap"><svg id="radar" viewBox="0 0 400 340" role="img" aria-label="Radar chart of your five axes"></svg></div>
-    <div id="axisList" style="margin-top:14px"></div>
-    <div class="saved-dot" id="saved2">Saved &#10003;</div>
+  <div style="text-align:center;margin:8px 0 4px">
+    <button class="btn" data-goto="report">See my compass &rarr;</button>
   </div>
 
-  <div class="card">
-    <h2>Take it with you</h2>
-    <p class="hint">Your answers, axes and log as a clean document · bring it to your next 1:1.</p>
-    <div class="btn-row">
-      <button class="btn" id="btnCopy">Copy summary</button>
-      <button class="btn ghost" id="btnDownload">Download .md</button>
-    </div>
-  </div>
+  <div class="foot">Made for Ayaan &middot; everything stays on your device</div>
 </section>
 
 <!-- ============ TAB 3 : KAIZEN ============ -->
@@ -315,18 +304,6 @@ textarea:focus{border-color:var(--terra)}
     <button class="btn" id="btnLog">Log this week</button>
   </div>
 
-  <div class="card" id="trendCard" style="display:none">
-    <h2>The trend</h2>
-    <p class="hint">Each line is one axis of your radar, week over week.</p>
-    <svg id="trend" viewBox="0 0 640 240"></svg>
-    <div class="legend" id="trendLegend"></div>
-  </div>
-
-  <div class="card">
-    <h2>Past weeks</h2>
-    <div id="logList"></div>
-  </div>
-
   <div class="kaikaku">
     <div class="eyebrow">Kaikaku</div>
     <h2>Sometimes, don't inch. Leap.</h2>
@@ -337,15 +314,63 @@ textarea:focus{border-color:var(--terra)}
     <div id="leapList"></div>
   </div>
 
-  <div class="foot">Made for Ayan &middot; everything stays on your device</div>
+  <div class="foot">Made for Ayaan &middot; everything stays on your device</div>
+</section>
+
+<!-- ============ TAB 4 : REPORT ============ -->
+<section class="tabpane" id="pane-report">
+
+  <div id="reportEmpty">
+    <div class="tent">
+      <svg viewBox="0 0 400 340" style="width:min(78%,280px);height:auto" role="img" aria-label="A faint pentagon outline, waiting for your five axes" id="ghostRadar"></svg>
+      <h2>Your radar is waiting.</h2>
+      <p>Decide the five things that define a kickass 2027. The moment you name them, your pentagon comes alive here · and every week you log, it tracks how you move.</p>
+      <div class="choose-list" id="chooseList"></div>
+      <div style="margin-top:18px"><button class="btn" id="btnChoose">That's my five &rarr;</button></div>
+    </div>
+  </div>
+
+  <div id="reportLive" style="display:none">
+    <div class="card">
+      <h2>My radar</h2>
+      <p class="hint">Your five axes, rated 0&ndash;10 today. Rename them any time · this is a snapshot, not a verdict.</p>
+      <div class="radar-wrap"><svg id="radar" viewBox="0 0 400 340" role="img" aria-label="Radar chart of your five axes"></svg></div>
+      <div id="axisList" style="margin-top:14px"></div>
+      <div class="saved-dot" id="saved2">Saved &#10003;</div>
+    </div>
+
+    <div class="card" id="trendCard" style="display:none">
+      <h2>The trend</h2>
+      <p class="hint">Each line is one axis of your radar, week over week.</p>
+      <svg id="trend" viewBox="0 0 640 240"></svg>
+      <div class="legend" id="trendLegend"></div>
+    </div>
+
+    <div class="card">
+      <h2>Past weeks</h2>
+      <div id="logList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Take it with you</h2>
+      <p class="hint">Your answers, axes and log as a clean document · bring it to your next 1:1.</p>
+      <div class="btn-row">
+        <button class="btn" id="btnCopy">Copy summary</button>
+        <button class="btn ghost" id="btnDownload">Download .md</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">Made for Ayaan &middot; everything stays on your device</div>
 </section>
 
 </div>
 
 <nav class="tabbar"><div class="tabbar-in">
-  <button class="tab active" data-tab="questions">The Questions</button>
+  <button class="tab active" data-tab="questions">Questions</button>
   <button class="tab" data-tab="my2027">My 2027</button>
   <button class="tab" data-tab="kaizen">Kaizen</button>
+  <button class="tab" data-tab="report">Report</button>
 </div></nav>
 
 <div class="toast" id="toast"></div>
@@ -358,8 +383,14 @@ var DEFAXES=["Craft","Ownership","Reach","Visibility","Leadership"];
 
 var state=load();
 function load(){
-  try{var s=JSON.parse(localStorage.getItem("ayan2027"));if(s&&s.axes)return s;}catch(e){}
-  return {answers:{q1:"",q2:"",q3:""},axes:DEFAXES.map(function(n){return{name:n,value:5};}),logs:[],leaps:[]};
+  try{
+    var s=JSON.parse(localStorage.getItem("ayan2027"));
+    if(s&&s.axes){
+      if(typeof s.chosen!=="boolean")s.chosen=!!(s.logs&&s.logs.length);
+      return s;
+    }
+  }catch(e){}
+  return {answers:{q1:"",q2:"",q3:""},axes:DEFAXES.map(function(n){return{name:n,value:5};}),chosen:false,logs:[],leaps:[]};
 }
 var saveT;
 function save(which){
@@ -368,8 +399,10 @@ function save(which){
 }
 
 /* ---------- tabs ---------- */
-var tabs=document.querySelectorAll(".tab"),panes={questions:document.getElementById("pane-questions"),my2027:document.getElementById("pane-my2027"),kaizen:document.getElementById("pane-kaizen")};
+var tabs=document.querySelectorAll(".tab"),
+    panes={questions:document.getElementById("pane-questions"),my2027:document.getElementById("pane-my2027"),kaizen:document.getElementById("pane-kaizen"),report:document.getElementById("pane-report")};
 function go(name){
+  if(!panes[name])return;
   tabs.forEach(function(t){t.classList.toggle("active",t.dataset.tab===name);});
   Object.keys(panes).forEach(function(k){panes[k].classList.toggle("active",k===name);});
   if(location.hash!=="#"+name)history.replaceState(null,"","#"+name);
@@ -377,7 +410,7 @@ function go(name){
 }
 tabs.forEach(function(t){t.addEventListener("click",function(){go(t.dataset.tab);});});
 document.querySelectorAll("[data-goto]").forEach(function(b){b.addEventListener("click",function(){go(b.dataset.goto);});});
-if(location.hash==="#my2027"||location.hash==="#kaizen")go(location.hash.slice(1));
+if(location.hash)go(location.hash.slice(1));
 
 /* ---------- collapsibles ---------- */
 document.querySelectorAll("[data-lib] > .lib-head").forEach(function(h){
@@ -398,31 +431,73 @@ function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.c
   el.addEventListener("input",function(){state.answers["q"+i]=el.value;save("saved1");});
 });
 
-/* ---------- radar ---------- */
-var svg=document.getElementById("radar"),CX=200,CY=170,R=118,NS="http://www.w3.org/2000/svg";
-function pt(i,v){var a=(-90+i*72)*Math.PI/180,r=R*v/10;return[CX+r*Math.cos(a),CY+r*Math.sin(a)];}
+/* ---------- svg helpers ---------- */
+var NS="http://www.w3.org/2000/svg";
+function pt(cxy,i,v){var a=(-90+i*72)*Math.PI/180,r=cxy.r*v/10;return[cxy.cx+r*Math.cos(a),cxy.cy+r*Math.sin(a)];}
 function el(name,attrs){var e=document.createElementNS(NS,name);for(var k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+/* ---------- ghost (tentative) radar ---------- */
+var ghost=document.getElementById("ghostRadar"),GC={cx:200,cy:170,r:118};
+function drawGhost(){
+  while(ghost.firstChild)ghost.removeChild(ghost.firstChild);
+  [10,6.5,3].forEach(function(v){
+    var pts=[0,1,2,3,4].map(function(i){return pt(GC,i,v).join(",");}).join(" ");
+    ghost.appendChild(el("polygon",{points:pts,fill:"none",stroke:"#D8CCB8","stroke-width":1.4,"stroke-dasharray":"5 6"}));
+  });
+  [0,1,2,3,4].forEach(function(i){
+    var p=pt(GC,i,10);
+    ghost.appendChild(el("line",{x1:GC.cx,y1:GC.cy,x2:p[0],y2:p[1],stroke:"#E4DAC6","stroke-width":1,"stroke-dasharray":"3 5"}));
+    var lp=pt(GC,i,12.6);
+    var t=el("text",{x:lp[0],y:lp[1],"text-anchor":"middle","dominant-baseline":"middle","font-size":15,"font-weight":600,fill:"#C4B8A2","font-family":"Fraunces,serif"});
+    t.textContent="?";ghost.appendChild(t);
+  });
+}
+
+/* ---------- choose your five ---------- */
+var chooseList=document.getElementById("chooseList");
+function drawChoose(){
+  chooseList.innerHTML="";
+  state.axes.forEach(function(ax,i){
+    var row=document.createElement("div");row.className="choose-row";
+    var dot=document.createElement("span");dot.className="axis-dot";dot.style.background=AXCOLORS[i];
+    var inp=document.createElement("input");inp.className="choose-input";inp.value=ax.name;inp.maxLength=20;inp.id="choose"+i;
+    inp.setAttribute("aria-label","Axis "+(i+1)+" name");
+    row.appendChild(dot);row.appendChild(inp);chooseList.appendChild(row);
+  });
+}
+document.getElementById("btnChoose").addEventListener("click",function(){
+  state.axes.forEach(function(ax,i){
+    var v=document.getElementById("choose"+i).value.trim();
+    ax.name=v||DEFAXES[i];
+  });
+  state.chosen=true;save();
+  renderReport();buildMiniRatings();
+  toast("Your radar is live. Now rate where you stand.");
+});
+
+/* ---------- live radar ---------- */
+var svg=document.getElementById("radar"),RC={cx:200,cy:170,r:118};
 function drawRadar(){
   while(svg.firstChild)svg.removeChild(svg.firstChild);
   [2,4,6,8,10].forEach(function(v){
-    var pts=state.axes.map(function(_,i){return pt(i,v).join(",");}).join(" ");
+    var pts=state.axes.map(function(_,i){return pt(RC,i,v).join(",");}).join(" ");
     svg.appendChild(el("polygon",{points:pts,fill:"none",stroke:"#ECE2D0","stroke-width":v===10?1.6:1}));
   });
   state.axes.forEach(function(ax,i){
-    var p=pt(i,10);
-    svg.appendChild(el("line",{x1:CX,y1:CY,x2:p[0],y2:p[1],stroke:"#ECE2D0","stroke-width":1}));
-    var lp=pt(i,12.6);
+    var p=pt(RC,i,10);
+    svg.appendChild(el("line",{x1:RC.cx,y1:RC.cy,x2:p[0],y2:p[1],stroke:"#ECE2D0","stroke-width":1}));
+    var lp=pt(RC,i,12.6);
     var t=el("text",{x:lp[0],y:lp[1],"text-anchor":"middle","dominant-baseline":"middle","font-size":12.5,"font-weight":700,fill:AXCOLORS[i],"font-family":"Inter,sans-serif"});
     var name=ax.name||("Axis "+(i+1));
     t.textContent=name.length>12?name.slice(0,11)+"…":name;
     svg.appendChild(t);
   });
-  var pts=state.axes.map(function(ax,i){return pt(i,Math.max(ax.value,0.4)).join(",");}).join(" ");
+  var pts=state.axes.map(function(ax,i){return pt(RC,i,Math.max(ax.value,0.4)).join(",");}).join(" ");
   svg.appendChild(el("polygon",{points:pts,fill:"rgba(201,111,74,.16)",stroke:"#C96F4A","stroke-width":2.5,"stroke-linejoin":"round"}));
   state.axes.forEach(function(ax,i){
-    var p=pt(i,Math.max(ax.value,0.4));
+    var p=pt(RC,i,Math.max(ax.value,0.4));
     svg.appendChild(el("circle",{cx:p[0],cy:p[1],r:5.5,fill:AXCOLORS[i],stroke:"#fff","stroke-width":2}));
-    var vp=pt(i,Math.max(ax.value,0.4)+1.9);
+    var vp=pt(RC,i,Math.max(ax.value,0.4)+1.9);
     var vt=el("text",{x:vp[0],y:vp[1],"text-anchor":"middle","dominant-baseline":"middle","font-size":12,"font-weight":700,fill:"#2C2721","font-family":"Fraunces,serif"});
     vt.textContent=ax.value;svg.appendChild(vt);
   });
@@ -443,14 +518,26 @@ function drawAxisList(){
   });
 }
 
+/* ---------- report gate ---------- */
+function renderReport(){
+  var empty=document.getElementById("reportEmpty"),live=document.getElementById("reportLive");
+  if(state.chosen){
+    empty.style.display="none";live.style.display="block";
+    drawRadar();drawAxisList();renderLogs();renderTrend();
+  }else{
+    empty.style.display="block";live.style.display="none";
+    drawGhost();drawChoose();
+  }
+}
+
 /* ---------- export ---------- */
 function md(){
   var L=[];
-  L.push("# Ayan · 2027 · Begin with the end in mind");
+  L.push("# Ayaan · 2027 · How do we craft a kickass 2027?");
   L.push("_Exported "+new Date().toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})+"_");
-  L.push("");L.push("## Q1 · A person · Who is doing work I'd want to be doing in three years?");L.push(state.answers.q1||"_(not answered yet)_");
-  L.push("");L.push("## Q2 · A thing you can point at · In December 2027, what are three things I'd point at?");L.push(state.answers.q2||"_(not answered yet)_");
-  L.push("");L.push("## Q3 · A loss · What would make 2027 feel wasted?");L.push(state.answers.q3||"_(not answered yet)_");
+  L.push("");L.push("## 1 · Think of a person · Who is doing work I'd want to be doing in three years?");L.push(state.answers.q1||"_(not answered yet)_");
+  L.push("");L.push("## 2 · Think of a thing you can point at · In December 2027, what are three things I'd point at?");L.push(state.answers.q2||"_(not answered yet)_");
+  L.push("");L.push("## 3 · Think of the losses · What would make 2027 feel wasted?");L.push(state.answers.q3||"_(not answered yet)_");
   L.push("");L.push("## My radar (today)");state.axes.forEach(function(a){L.push("- **"+a.name+"**: "+a.value+"/10");});
   if(state.logs.length){L.push("");L.push("## Kaizen log");state.logs.slice().reverse().forEach(function(l){L.push("- **"+l.date+"** · "+l.note+" ("+l.ratings.map(function(r,i){return (state.axes[i]?state.axes[i].name:"A"+(i+1))+" "+r;}).join(", ")+")");});}
   if(state.leaps.length){L.push("");L.push("## Kaikaku leaps");state.leaps.slice().reverse().forEach(function(l){L.push("- **"+l.date+"** · "+l.text);});}
@@ -464,8 +551,8 @@ document.getElementById("btnCopy").addEventListener("click",function(){
 function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied · paste it anywhere");}catch(e){toast("Copy didn't work · try Download");}document.body.removeChild(ta);}
 document.getElementById("btnDownload").addEventListener("click",function(){
   var blob=new Blob([md()],{type:"text/markdown"}),a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);a.download="ayan-2027.md";document.body.appendChild(a);a.click();document.body.removeChild(a);
-  toast("Downloaded ayan-2027.md");
+  a.href=URL.createObjectURL(blob);a.download="ayaan-2027.md";document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast("Downloaded ayaan-2027.md");
 });
 
 /* ---------- kaizen log ---------- */
@@ -492,8 +579,9 @@ document.getElementById("btnLog").addEventListener("click",function(){
   state.logs.push({date:today,note:note,ratings:miniVals.slice()});
   state.axes.forEach(function(ax,i){ax.value=miniVals[i];});
   document.getElementById("logNote").value="";
-  save();drawRadar();drawAxisList();renderLogs();renderTrend();
-  toast("Logged. Small counts.");
+  save();
+  if(state.chosen){drawRadar();drawAxisList();renderLogs();renderTrend();}
+  toast("Logged. Small counts. See it in Report.");
 });
 function renderLogs(){
   var list=document.getElementById("logList");list.innerHTML="";
@@ -563,7 +651,7 @@ function renderLeaps(){
 }
 
 /* ---------- init ---------- */
-drawRadar();drawAxisList();buildMiniRatings();renderLogs();renderTrend();renderLeaps();
+buildMiniRatings();renderLeaps();renderReport();
 })();
 </script>
 </body>
