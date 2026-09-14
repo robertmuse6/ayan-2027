@@ -288,7 +288,7 @@ textarea:focus{border-color:var(--terra)}
   <div class="card">
     <h2>My radar</h2>
     <p class="hint">Pick the five axes that define a kickass year for you. Then rate where you stand today, 0&ndash;10. This is a snapshot, not a verdict.</p>
-    <div class="radar-wrap"><svg id="radar" viewBox="0 0 340 340" role="img" aria-label="Radar chart of your five axes"></svg></div>
+    <div class="radar-wrap"><svg id="radar" viewBox="0 0 400 340" role="img" aria-label="Radar chart of your five axes"></svg></div>
     <div id="axisList" style="margin-top:14px"></div>
     <div class="saved-dot" id="saved2">Saved &#10003;</div>
   </div>
@@ -399,7 +399,7 @@ function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.c
 });
 
 /* ---------- radar ---------- */
-var svg=document.getElementById("radar"),CX=170,CY=170,R=118,NS="http://www.w3.org/2000/svg";
+var svg=document.getElementById("radar"),CX=200,CY=170,R=118,NS="http://www.w3.org/2000/svg";
 function pt(i,v){var a=(-90+i*72)*Math.PI/180,r=R*v/10;return[CX+r*Math.cos(a),CY+r*Math.sin(a)];}
 function el(name,attrs){var e=document.createElementNS(NS,name);for(var k in attrs)e.setAttribute(k,attrs[k]);return e;}
 function drawRadar(){
